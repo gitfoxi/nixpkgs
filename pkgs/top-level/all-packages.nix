@@ -1639,6 +1639,8 @@ let
 
   radvd = callPackage ../tools/networking/radvd { };
 
+  ranger = pythonPackages.ranger;
+
   privateer = callPackage ../games/privateer { };
 
   rtmpdump = callPackage ../tools/video/rtmpdump { };

@@ -593,6 +593,30 @@ pythonPackages = modules // import ./python-packages-generated.nix {
   };
 
 
+  ranger = buildPythonPackage rec {
+    name = "ranger-1.6.1";
+
+    src = fetchurl {
+      url = "http://git.savannah.gnu.org/cgit/ranger.git/snapshot/ranger-1.6.1.tar.gz";
+      md5 = "92bd485f4628f1f38e991f2a6b6b8388";
+    };
+
+     propagatedBuildInputs = [ modules.curses ];
+
+    # Ranger has no tests I guess
+    doCheck = false;
+
+    meta = with stdenv.lib; {
+      description = "File manager with VI key bindings.";
+      homepage = http://ranger.nongnu.org/;
+      license = licenses.gpl3;
+      platforms = stdenv.lib.platforms.all;
+# How to get or become a maintainer?
+#      maintainers = [ ];
+    };
+  };
+
+
   bpython = buildPythonPackage rec {
      name = "bpython-0.12";
      src = fetchurl {
