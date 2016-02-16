@@ -19,6 +19,7 @@ rec {
     else if system == "armv5tel-linux" then import ./bootstrap/armv5tel.nix
     else if system == "armv6l-linux" then import ./bootstrap/armv6l.nix
     else if system == "armv7l-linux" then import ./bootstrap/armv7l.nix
+    else if system == "aarch64-linux" then import ./bootstrap/aarch64.nix
     else if system == "mips64el-linux" then import ./bootstrap/loongson2f.nix
     else abort "unsupported platform for the pure Linux stdenv";
 
@@ -27,6 +28,7 @@ rec {
     ''
       export NIX_ENFORCE_PURITY=1
       ${if system == "x86_64-linux" then "NIX_LIB64_IN_SELF_RPATH=1" else ""}
+      ${if system == "aarch64-linux" then "NIX_LIB64_IN_SELF_RPATH=1" else ""}
       ${if system == "mips64el-linux" then "NIX_LIB32_IN_SELF_RPATH=1" else ""}
     '';
 

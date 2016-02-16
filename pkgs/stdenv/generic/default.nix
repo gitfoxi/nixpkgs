@@ -260,6 +260,7 @@ let
       isDarwin = system == "x86_64-darwin";
       isLinux = system == "i686-linux"
              || system == "x86_64-linux"
+             || system == "aarch64-linux"
              || system == "powerpc-linux"
              || system == "armv5tel-linux"
              || system == "armv6l-linux"
@@ -290,6 +291,7 @@ let
               || system == "x86_64-cygwin"
               || system == "x86_64-solaris";
       is64bit = system == "x86_64-linux"
+             || system == "x86_64-aarch64"
              || system == "x86_64-darwin"
              || system == "x86_64-freebsd"
              || system == "x86_64-openbsd"

@@ -17,7 +17,7 @@
   # files in standard system directories (/usr/include, etc.)
   noSysDirs ? (system != "x86_64-freebsd" && system != "i686-freebsd"
                && system != "x86_64-solaris"
-               && system != "x86_64-kfreebsd-gnu")
+               && system != "x86_64-kfreebsd-gnu" && system != "aarch64-linux")
 
   # More flags for the bootstrapping of stdenv.
 , gccWithCC ? true
@@ -77,6 +77,7 @@ let
       else if system == "armv5tel-linux" then platforms.sheevaplug
       else if system == "mips64el-linux" then platforms.fuloong2f_n32
       else if system == "x86_64-linux" then platforms.pc64
+      else if system == "aarch64-linux" then platforms.arm64
       else if system == "i686-linux" then platforms.pc32
       else platforms.pcBase;
 
@@ -4369,7 +4370,8 @@ let
 
   supportsJDK =
     system == "i686-linux" ||
-    system == "x86_64-linux";
+    system == "x86_64-linux" ||
+    system == "aarch64-linux";
 
   jdkdistro = installjdk: pluginSupport:
     assert supportsJDK;
@@ -5019,16 +5021,6 @@ let
 
   rustfmt = callPackage ../development/tools/rust/rustfmt { };
 
-  sbclBootstrap = callPackage ../development/compilers/sbcl/bootstrap.nix {};
-  sbcl = callPackage ../development/compilers/sbcl {};
-  # For StumpWM
-  sbcl_1_2_5 = callPackage ../development/compilers/sbcl/1.2.5.nix {
-    clisp = clisp;
-  };
-  # For ACL2
-  sbcl_1_2_0 = callPackage ../development/compilers/sbcl/1.2.0.nix {
-    clisp = clisp;
-  };
 
   scala_2_9 = callPackage ../development/compilers/scala/2.9.nix { };
   scala_2_10 = callPackage ../development/compilers/scala/2.10.nix { };
@@ -5147,9 +5139,6 @@ let
 
   ### DEVELOPMENT / INTERPRETERS
 
-  acl2 = callPackage ../development/interpreters/acl2 {
-    sbcl = sbcl_1_2_0;
-  };
 
   angelscript = callPackage ../development/interpreters/angelscript {};
 
@@ -9108,8 +9097,6 @@ let
   };
 
   lispPackagesClisp = lispPackagesFor (wrapLisp clisp);
-  lispPackagesSBCL = lispPackagesFor (wrapLisp sbcl);
-  lispPackages = recurseIntoAttrs lispPackagesSBCL;
 
 
   ### DEVELOPMENT / PERL MODULES
@@ -11481,7 +11468,6 @@ let
     enableNetworkManager = config.networking.networkmanager.enable or false;
   };
 
-  clfswm = callPackage ../applications/window-managers/clfswm { };
 
   clipgrab = callPackage ../applications/video/clipgrab { };
 
@@ -13451,10 +13437,6 @@ let
 
   stp = callPackage ../applications/science/logic/stp {};
 
-  stumpwm = callPackage ../applications/window-managers/stumpwm {
-    sbcl = sbcl_1_2_5;
-    lispPackages = lispPackagesFor (wrapLisp sbcl_1_2_5);
-  };
 
   sublime = callPackage ../applications/editors/sublime { };
 
@@ -15313,7 +15295,6 @@ let
 
   prover9 = callPackage ../applications/science/logic/prover9 { };
 
-  satallax = callPackage ../applications/science/logic/satallax {};
 
   saw-tools = callPackage ../applications/science/logic/saw-tools {};
 
@@ -15382,13 +15363,10 @@ let
     texinfo = texinfo4;
   };
 
-  fricas = callPackage ../applications/science/math/fricas { };
 
   gap = callPackage ../applications/science/math/gap { };
 
-  maxima = callPackage ../applications/science/math/maxima { };
 
-  wxmaxima = callPackage ../applications/science/math/wxmaxima { wxGTK = wxGTK30; };
 
   pari = callPackage ../applications/science/math/pari {};
 

@@ -83,7 +83,7 @@ let
     enableParallelBuilding = false;
 
     NIX_LDFLAGS = optionalString selinuxSupport "-lsepol";
-    FORCE_UNSAFE_CONFIGURE = stdenv.lib.optionalString (stdenv.system == "armv7l-linux" || stdenv.isSunOS) "1";
+    FORCE_UNSAFE_CONFIGURE = stdenv.lib.optionalString (stdenv.system == "aarch64-linux" || stdenv.system == "armv7l-linux" || stdenv.isSunOS) "1";
 
     makeFlags = optionalString stdenv.isDarwin "CFLAGS=-D_FORTIFY_SOURCE=0";
 

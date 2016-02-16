@@ -11,9 +11,15 @@ rec {
 
   pc64 = pcBase // { kernelArch = "x86_64"; };
 
+  arm64 = pcBase // { kernelArch = "aarch64"; };
+
   pc32 = pcBase // { kernelArch = "i386"; };
 
   pc32_simplekernel = pc32 // {
+    kernelAutoModules = false;
+  };
+
+  arm64_simplekernel = arm64 // {
     kernelAutoModules = false;
   };
 
