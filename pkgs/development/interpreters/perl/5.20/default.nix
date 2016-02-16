@@ -33,6 +33,7 @@ stdenv.mkDerivation rec {
   patches =
     [ # Do not look in /usr etc. for dependencies.
       ./no-sys-dirs.patch
+      ./link-math.patch
     ]
     ++ optional stdenv.isSunOS ./ld-shared.patch
     ++ stdenv.lib.optional stdenv.isDarwin [ ./cpp-precomp.patch ];

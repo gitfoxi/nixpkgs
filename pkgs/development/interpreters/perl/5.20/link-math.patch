@@ -1,0 +1,10 @@
+--- perl-5.20.3/Makefile.SH.orig        2016-02-16 17:36:48.404557751 +0000
++++ perl-5.20.3/Makefile.SH     2016-02-16 17:37:03.294557751 +0000
+@@ -343,7 +343,7 @@
+ ext = \$(dynamic_ext) \$(static_ext) \$(nonxs_ext)
+ DYNALOADER = DynaLoader\$(OBJ_EXT)
+
+-libs = $perllibs $cryptlib
++libs = $perllibs $cryptlib -lm
+
+ public = \$(PERL_EXE) utilities translators
