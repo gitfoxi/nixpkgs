@@ -1,10 +1,10 @@
-{ stdenv, fetchurl }:
+{ stdenv, fetchgit }:
 
 stdenv.mkDerivation rec {
   name = "patchelf-0.8";
 
-  src = fetchurl {
-    url = "http://nixos.org/releases/patchelf/${name}/${name}.tar.bz2";
+  src = fetchgit {
+    url = "https://github.com/gitfoxi/patchelf.git";
     sha256 = "c99f84d124347340c36707089ec8f70530abd56e7827c54d506eb4cc097a17e7";
   };
 

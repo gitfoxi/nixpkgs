@@ -2,7 +2,7 @@
 , cross ? null, gold ? true, bison ? null
 }:
 
-let basename = "binutils-2.23.1"; in
+let basename = "binutils-2.26"; in
 
 with { inherit (stdenv.lib) optional optionals optionalString; };
 
@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "mirror://gnu/binutils/${basename}.tar.bz2";
-    sha256 = "06bs5v5ndb4g5qx96d52lc818gkbskd1m0sz57314v887sqfbcia";
+    sha256 = "1ngc2h3knhiw8s22l8y6afycfaxr5grviqy7mwvm4bsl14cf9b62";
   };
 
   patches = [
@@ -31,7 +31,9 @@ stdenv.mkDerivation rec {
     # Always add PaX flags section to ELF files.
     # This is needed, for instance, so that running "ldd" on a binary that is
     # PaX-marked to disable mprotect doesn't fail with permission denied.
-    ./pt-pax-flags-20121023.patch
+    
+    # This will be tricky to uprev -- let's see how it goes without it
+    # ./pt-pax-flags-20121023.patch
   ];
 
   nativeBuildInputs = optional gold bison;
@@ -59,11 +61,13 @@ stdenv.mkDerivation rec {
     else "-static-libgcc";
 
   configureFlags =
-    [ "--enable-shared" "--enable-deterministic-archives" "--disable-werror" ]
+    [ "--enable-shared" "--enable-deterministic-archives" "--disable-werror" "--enable-gold=yes" "--enable-ld=no"
+      "--build=aarch64-linux-gnu" "--host=aarch64-linux-gnu" "--target=aarch64-linux-gnu" ]
     ++ optional (stdenv.system == "mips64el-linux") "--enable-fix-loongson2f-nop"
     ++ optional (cross != null) "--target=${cross.config}"
     ++ optionals gold [ "--enable-gold" "--enable-plugins" ]
-    ++ optional (stdenv.system == "i686-linux") "--enable-targets=x86_64-linux-gnu";
+    ++ optional (stdenv.system == "i686-linux") "--enable-targets=x86_64-linux-gnu"
+    ++ optional (stdenv.system == "aarch64-linux") "--build=aarch64";
 
   enableParallelBuilding = true;
 

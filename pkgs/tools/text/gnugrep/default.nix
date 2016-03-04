@@ -1,13 +1,13 @@
 { stdenv, fetchurl, pcre, libiconv, perl }:
 
-let version = "2.22"; in
+let version = "2.23"; in
 
 stdenv.mkDerivation {
   name = "gnugrep-${version}";
 
   src = fetchurl {
     url = "mirror://gnu/grep/grep-${version}.tar.xz";
-    sha256 = "1srn321x7whlhs5ks36zlcrrmj4iahll8fxwsh1vbz3v04px54fa";
+    sha256 = "1kvflnraswy6mz3dbxs9m4aqgqf9603z63l2140ph5yfw674gz2l";
   };
 
   # Perl is needed for testing

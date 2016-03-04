@@ -124,7 +124,7 @@ stdenv.mkDerivation ({
       "libc_cv_as_needed=no"
     ] ++ stdenv.lib.optional withGd "--with-gd";
 
-  installFlags = [ "sysconfdir=$(out)/etc" ];
+  installFlags = [ "sysconfdir=$out/etc" ];
 
   buildInputs = stdenv.lib.optionals (cross != null) [ gccCross ]
     ++ stdenv.lib.optional (mig != null) mig

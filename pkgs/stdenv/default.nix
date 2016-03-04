@@ -44,7 +44,7 @@ rec {
   stdenv =
     if system == "i686-linux" then stdenvLinux else
     if system == "x86_64-linux" then stdenvLinux else
-    if system == "aarch64-linux" then /* stdenvLinux */ stdenvNative else
+    if system == "aarch64-linux" then stdenvLinux /* stdenvNative */ else
     if system == "armv5tel-linux" then stdenvLinux else
     if system == "armv6l-linux" then stdenvLinux else
     if system == "armv7l-linux" then stdenvLinux else

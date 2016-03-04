@@ -1,4 +1,6 @@
 # Unpack the bootstrap tools tarball.
+set +e
+
 echo Unpacking the bootstrap tools...
 $builder mkdir $out
 < $tarball $builder unxz | $builder tar x -C $out
@@ -21,6 +23,8 @@ LD_LIBRARY_PATH=$out/lib $LD_BINARY $out/bin/cp $out/bin/patchelf .
 for i in $out/bin/* $out/libexec/gcc/*/*/*; do
     if [ -L "$i" ]; then continue; fi
     if [ -z "${i##*/liblto*}" ]; then continue; fi
+    if [ -z "${i##*/patchel*}" ]; then continue; fi
+    if [ -z "${i##*/static*}" ]; then continue; fi
     echo patching "$i"
     LD_LIBRARY_PATH=$out/lib $LD_BINARY \
         $out/bin/patchelf --set-interpreter $LD_BINARY --set-rpath $out/lib --force-rpath "$i"
@@ -34,6 +38,7 @@ done
 
 # Fix the libc linker script.
 export PATH=$out/bin
+cat $out/lib/libc.so | sed "s|/nix/store/e*-[^/]*/|$out/|g" > $out/lib/libc.so.tmp
 cat $out/lib/libc.so | sed "s|/nix/store/e*-[^/]*/|$out/|g" > $out/lib/libc.so.tmp
 mv $out/lib/libc.so.tmp $out/lib/libc.so
 cat $out/lib/libpthread.so | sed "s|/nix/store/e*-[^/]*/|$out/|g" > $out/lib/libpthread.so.tmp
@@ -61,3 +66,5 @@ echo "#! $out/bin/sh" > $out/bin/xz
 echo "exec $builder unxz \"\$@\"" >> $out/bin/xz
 
 chmod +x $out/bin/egrep $out/bin/fgrep $out/bin/xz
+
+exit 0
